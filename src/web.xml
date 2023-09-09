@@ -1,0 +1,10 @@
+<web-app>
+    <servlet>
+        <servlet-name>user</servlet-name>
+        <servlet-class>org.skyme.controller.controllerImpl.UserController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>user</servlet-name>
+        <pattern-url>/user/*</pattern-url>
+    </servlet-mapping>
+</web-app>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>打砖块</title>
+</head>
+<body>
+<script>
+
+  // 创建小球
+  let ball = document.createElement("div");
+  document.body.appendChild(ball);
+  ball.style.width = "100px";
+  ball.style.height = "100px";
+  ball.style.backgroundColor = "lightgray";
+  ball.style.borderRadius = "50%";
+  ball.style.position = "absolute";
+
+  // 创建下面接的板子
+  let board = document.createElement("div");
+  document.body.appendChild(board);
+  board.style.width = "200px";
+  board.style.height = "20px";
+  board.style.backgroundColor = "gray";
+  board.style.position = "absolute";
+  var w = document.documentElement.clientWidth || document.body.clientWidth;
+  var h = document.documentElement.clientHeight || document.body.clientHeight;
+  board.style.top = (h - 20) + "px";
+
+  // 让板子移动起来 键盘事件
+  document.onkeydown = function (event){
+    let which = event.which || event.keyCode;
+    let x = board.style.left;
+    x = x == "" ? 0 : parseInt(x);
+    if (which == 37){//板子左移
+      if (x >= 0)
+        x -= 10;
+    } else if (which == 39){//板子右移
+      if (x <= w - 100)
+        x += 10;
+    }
+    board.style.left = x + "px";
+  }
+
+  // 让小球动起来
+  let intervalId = setInterval(function (){
+    move ();
+  },1)
+
+  // 小球的方向
+  let directV = "bottom";
+  let directH = "right";
+  let spacce = 1;// 每次移动的距离
+
+  function move (){
+    let left = ball.style.left;
+    let top = ball.style.top;
+    left = left == "" ? 0 : parseInt(left);
+    top = top == "" ? 0 : parseInt(top);
+    if (directV == "bottom"){
+      top += spacce;
+    } else if (directV == "top"){
+      top -= spacce;
+    }
+
+    if (directH == "right"){
+      left += spacce;
+    } else if (directH == "left"){
+      left -= spacce;
+    }
+    ball.style.left = left + "px";
+    ball.style.top = top + "px";
+    board.style.top = (h - 20) + "px";
+    // 获取板子的x 和 y
+    let x = board.style.left;
+    x = x == "" ? 0 : parseInt(x);
+    let y = (h - 20);
+
+    if (directV == "bottom" ){
+      if (top + 100 >= y && left + 50 >= x && left + 50 <= x + 200){
+        directV = "top";
+      }
+      // 左边的极限情况  (x - (left + 50))^2 + (y - (top + 50))^ <= 2500
+      if ( Math.pow((x - (left + 50)),2) + Math.pow((y - (top + 50)),2) <= 2500){
+        directV = "top";
+        directH = "left";
+      }
+      if ( Math.pow((x + 200 - (left + 50)),2) + Math.pow((y - (top + 50)),2) <= 2500){
+        directV = "top";
+        directH = "left";
+      }
+      // 游戏结束
+      if (top + 100 >= h){
+        clearInterval(intervalId);
+        alert("触底了，游戏结束");
+      }
+    }
+    if (directV == "top" && top <= 0){
+      directV = "bottom";
+    }
+    if (directH == "right" && left + 100 >= w){
+      directH = "left";
+    }
+    if (directH == "left" && left <= 0){
+      directH = "right";
+    }
+  }
+</script>
+</body>
+</html>
