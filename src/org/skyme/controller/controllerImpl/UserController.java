@@ -4,6 +4,8 @@ import org.skyme.config.ServletConfig;
 import org.skyme.controller.Controller;
 import org.skyme.core.Request;
 import org.skyme.core.Response;
+import org.skyme.service.UserService;
+import org.skyme.service.serviceImpl.UserServiceImpl;
 
 /**
  * @author:Skyme
@@ -11,12 +13,10 @@ import org.skyme.core.Response;
  * @Description: 用户控制器
  */
 public class UserController extends BaseController {
+   UserService userService=new UserServiceImpl();
    public void login(Request request,Response response){
-        response.setMessage("<html><head>\n" +
-                "  <meta charset=\"UTF-8\">\n" +
-                "  <title>登录</title>\n" +
-                "</head><body><h1>这个是登录的方法</h1></body></html>");
-        response.response();
+
+       userService.login(request,response);
 
    }
 }
